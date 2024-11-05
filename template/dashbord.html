@@ -1,0 +1,224 @@
+{{ define "dashboard.html" }}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>大数据仪表盘</title>
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #1a1a2e, #0f0f1a);
+            overflow: hidden;
+            color: #fff;
+            position: relative;
+        }
+        /* .navbar {
+            margin-bottom: 20px;
+            background-color: rgba(255, 255, 255, 0.9);
+        }
+        .navbar-brand {
+            color: #333;
+            font-size: 22px;
+        } */
+
+        .navbar-brand {
+            color: #333;
+            font-size: 28px;
+            font-weight: bold;      /* 字体加粗 */
+            text-align: center;     /* 居中显示 */
+            width: 100%;            /* 宽度占满父容器 */
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: center; /* 使用 flexbox 进行水平居中 */
+            align-items: center;     /* 垂直居中 */
+        }
+        .nav-link{
+            margin-right: 30px;
+            width: 100px;
+        }
+
+        .status-module {
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px 0;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            animation: pulse 1s infinite alternate;
+        }
+        .status-green {
+            background-color: #28a745;
+        }
+        .status-yellow {
+            background-color: #ffc107;
+        }
+        .status-red {
+            background-color: #dc3545;
+        }
+        .status-title {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+        .status-value {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        .component-card {
+            margin: 10px;
+            padding: 15px;
+            border-radius: 10px;
+            background-color: rgba(255, 255, 255, 0.2); /* Increased transparency */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+        .component-list {
+            margin-top: 10px;
+            font-size: 1.2em;
+            list-style: none;
+            padding: 0;
+        }
+        .component-list li {
+            padding: 5px 0;
+        }
+        .combined-card {
+            margin: 10px 0;
+            padding: 15px;
+            border-radius: 10px;
+            background-color: rgba(255, 255, 255, 0.3); /* Transparent background for the combined card */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+        }
+        .meteor {
+            position: absolute;
+            width: 3px;
+            height: 100px;
+            background: rgba(255, 255, 255, 0.8);
+            animation: fall linear infinite;
+            left: 0; /* Set left to 0 for vertical fall */
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-100px);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh);
+                opacity: 0;
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                opacity: 0.8;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">大数据集群监控面板</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/logout">退出登录</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- 主模块状态 -->
+        <div class="row">
+            <div class="col-md-4">
+                <div class="status-module {{ if eq .hadoopStatus true }}status-green{{ else }}status-red{{ end }}">
+                    <h3>Hadoop</h3>
+                    <p>{{ if eq .hadoopStatus true }}正常{{ else }}异常{{ end }}</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="status-module {{ if eq .dorisFEStatus true }}status-green{{ else }}status-red{{ end }}">
+                    <h3>DorisFE</h3>
+                    <p>{{ if eq .dorisFEStatus true }}正常{{ else }}异常{{ end }}</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="status-module {{ if eq .dorisBEStatus true }}status-green{{ else }}status-red{{ end }}">
+                    <h3>dorisBE</h3>
+                    <p>{{ if eq .dorisBEStatus true }}正常{{ else }}异常{{ end }}</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="status-module {{ if eq .kafkaStatus true }}status-green{{ else }}status-red{{ end }}">
+                    <h3>Kafka</h3>
+                    <p>{{ if eq .kafkaStatus true }}正常{{ else }}异常{{ end }}</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="status-module {{ if eq .dolphinscheduler true }}status-green{{ else }}status-red{{ end }}">
+                    <h3>Dolphinscheduler</h3>
+                    <p>{{ if eq .dolphinscheduler true }}正常{{ else }}异常{{ end }}</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="status-module {{ if eq .zookeeperStatus true }}status-green{{ else }}status-red{{ end }}">
+                    <h3>ZooKeeper</h3>
+                    <p>{{ if eq .zookeeperStatus true }}正常{{ else }}异常{{ end }}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 服务器节点资源状态 -->
+        <div class="row">
+            {{ range .resourceStatus }}
+            <div class="col-md-4">
+                <div class="server-card">
+                    <h5>{{ .Name }}</h5>
+                    <p>CPU: {{ .CPU }}</p>
+                    <p>内存: {{ .RAM }}</p>
+                    <p>磁盘: {{ .ROM }}</p>
+                </div>
+            </div>
+            {{ end }}
+        </div>
+    </div>
+
+    <!-- 每秒自动刷新 -->
+    <script>
+        setTimeout(function() {
+            location.reload();
+        }, 5000);  // 每 1 秒刷新一次
+    </script>
+
+    <!-- Meteor effect -->
+    <script>
+        function createMeteor() {
+            const meteor = document.createElement('div');
+            meteor.className = 'meteor';
+            meteor.style.left = Math.random() * 100 + 'vw'; // Random horizontal position
+            meteor.style.animationDuration = (Math.random() * 1 + 0.5) + 's'; // Faster fall speed
+            document.body.appendChild(meteor);
+
+            // Remove the meteor after it falls
+            meteor.addEventListener('animationend', () => {
+                meteor.remove();
+            });
+        }
+
+        // Generate meteors every 2000ms (2 seconds)
+        setInterval(createMeteor, 2000);
+    </script>
+
+    <script src="/static/js/jquery-3.5.1.slim.min.js"></script>
+    <script src="/static/js/popper.min.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+</body>
+</html>
+{{ end }}

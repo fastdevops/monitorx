@@ -1,0 +1,113 @@
+nodes:
+  - name: hadoop001
+    ssh_host: hadoop001
+    ssh_user: root
+    ssh_port: 22
+    ssh_keyfile: /root/.ssh/id_rsa
+    services: 
+      # hadoop
+      - NameNode
+      - DFSZKFailoverController
+      - ResourceManager
+      - JournalNode
+      - DataNode
+      - NodeManager
+      # zookeeper
+      - QuorumPeerMain
+      # dolphinscheduler
+      - WorkerServer
+      # Doris BE
+      - DorisBE
+  - name: hadoop002
+    ssh_host: hadoop002
+    ssh_user: root
+    ssh_port: 22
+    ssh_keyfile: /root/.ssh/id_rsa
+    services:
+      # hadoop
+      - ResourceManager
+      - JournalNode
+      - NodeManager
+      - DataNode
+      - NameNode
+      # Doris BE
+      - DorisBE
+      # dolphinscheduler
+      - WorkerServer
+      # zookeeper
+      - QuorumPeerMain
+  - name: hadoop003
+    ssh_host: hadoop003
+    ssh_user: root
+    ssh_port: 22
+    ssh_keyfile: /root/.ssh/id_rsa
+    services:
+      # hadoop
+      - JournalNode
+      - DataNode
+      - NodeManager
+      # Doris BE FE
+      - DorisFE
+      - DorisBE
+      # zookeeper
+      - QuorumPeerMain
+      # dolphinscheduler
+      - WorkerServer
+      # Kafka
+      - Kafka
+  - name: hadoop004
+    ssh_host: hadoop004
+    ssh_user: root
+    ssh_port: 22
+    ssh_keyfile: /root/.ssh/id_rsa
+    services:
+      # hadoop 
+      - DataNode
+      - NodeManager
+      # Doris BE FE
+      - DorisFE
+      - DorisBE
+      # kafka
+      - Kafka
+      # dolphinscheduler
+      - MasterServer
+      - WorkerServer
+  - name: hadoop005
+    ssh_host: hadoop005
+    ssh_user: root
+    ssh_port: 22
+    ssh_keyfile: /root/.ssh/id_rsa
+    services:
+      # zookeeper
+      - QuorumPeerMain
+      # Doris BE FE
+      - DorisBE
+      - DorisFE
+      # kafka
+      - Kafka
+      # dolphinscheduler
+      - ApiApplicationServer
+      - AlertServer
+      - MasterServer
+      
+check:
+  max_second: 10
+
+telegram:
+  token: "123456"
+  chat_id: "-123456"
+
+logger:
+  log_level: "info"          # 可选值: debug, info, warn, error, dpanic, panic, fatal
+  log_path: "./logs/"        # 日志文件路径
+  log_name: "app.log"        # 日志文件名称
+  log_max_size: 10           # 日志文件最大大小 (MB)
+  log_max_backups: 5         # 保留的日志文件备份数量
+  log_max_age: 30            # 日志文件保留天数
+
+session:
+  secret: 123456
+
+auth:
+  user: admin
+  passwd: 123456

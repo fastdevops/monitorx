@@ -1,0 +1,117 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', sans-serif;
+    background: linear-gradient(135deg, #1f1c2c, #928DAB);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    color: #fff;
+}
+
+.login-container {
+    background-color: rgba(0, 0, 0, 0.8);
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
+    width: 350px;
+    text-align: center;
+}
+
+.login-container h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #00c853;
+}
+
+.input-group {
+    margin-bottom: 20px;
+}
+
+.input-group label {
+    display: block;
+    text-align: left;
+    margin-bottom: 8px;
+    font-size: 14px;
+    color: #aaa;
+}
+
+.input-group input {
+    width: 95%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    color: #333;
+}
+
+.input-group input:focus {
+    outline: none;
+    box-shadow: 0 0 10px rgba(0, 200, 83, 0.5);
+}
+
+.login-btn {
+    background-color: #00c853;
+    color: white;
+    font-size: 16px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 100%;
+}
+
+.login-btn:hover {
+    background-color: #009624;
+}
+
+.forgot-link {
+    margin-top: 10px;
+    font-size: 12px;
+    color: #aaa;
+}
+
+.forgot-link a {
+    color: #00c853;
+    text-decoration: none;
+}
+
+.forgot-link a:hover {
+    text-decoration: underline;
+}
+
+/* Background animation elements */
+.background-elements {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+    overflow: hidden;
+}
+
+.background-elements .line {
+    position: absolute;
+    width: 2px;
+    height: 100px;
+    background: rgba(255, 255, 255, 0.1);
+    animation: move 4s linear infinite;
+}
+
+@keyframes move {
+    from { transform: translateY(0); }
+    to { transform: translateY(100vh); }
+}
+
+.background-elements .line:nth-child(even) {
+    left: 25%;
+    animation-duration: 3s;
+}
+
+.background-elements .line:nth-child(odd) {
+    left: 75%;
+    animation-duration: 6s;
+}

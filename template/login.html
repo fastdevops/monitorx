@@ -1,0 +1,68 @@
+{{ define "login.html" }}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Big Data github.com/fastdevops/monitorx System - Login</title>
+    <!-- 使用 link 标签加载外部 CSS -->
+    <link href="/static/css/css2.css" rel="stylesheet">
+    <link href="/static/css/login.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="login-container">
+        <h1>大数据集群监控面板</h1>
+        <div class="input-group">
+            <label for="username">用户名</label>
+            <input type="text" id="username" placeholder="输入用户名">
+        </div>
+        <div class="input-group">
+            <label for="password">密码</label>
+            <input type="password" id="password" placeholder="输入密码">
+        </div>
+        <button class="login-btn" id="login-button" onclick="login()">登录</button>
+    </div>
+
+    <div class="background-elements">
+        <div class="line"></div>
+        <div class="line"></div>
+        <div class="line"></div>
+        <div class="line"></div>
+    </div>
+
+    <script>
+        function login() {
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+
+            if (!username || !password) {
+                alert("请填写用户名和密码");
+                return;
+            }
+
+            fetch("/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ username: username, password: password })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.message) {
+                    window.location.href = "/dashboard/hadoop";
+                } else if (data.error) {
+                    alert("登录失败: " + data.error);
+                }
+            })
+            .catch(err => {
+                console.error("请求失败: ", err);
+                alert("请求失败，请稍后再试");
+            });
+        }
+    </script>
+</body>
+</html>
+{{ end }}
